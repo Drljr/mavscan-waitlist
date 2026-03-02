@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import WaitlistProgress from "../WaitlistProgress";
 
 export default function HeroSection() {
@@ -33,12 +32,12 @@ export default function HeroSection() {
         <WaitlistProgress />
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Link
-            href="/waitlist"
+          <a
+            href="#waitlist-form"
             className="inline-flex items-center justify-center rounded-2xl bg-[#008AFF] px-5 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-[#0077e6] hover:scale-[1.01]"
           >
             Join the Waitlist
-          </Link>
+          </a>
         </div>
       </div>
 

@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-// Path to store waitlist data (in production, use a real database)
 const DATA_FILE = path.join(process.cwd(), "data", "waitlist.json");
 
-// Ensure data directory exists
 function ensureDataDir() {
   const dataDir = path.dirname(DATA_FILE);
   if (!fs.existsSync(dataDir)) {
@@ -13,7 +11,6 @@ function ensureDataDir() {
   }
 }
 
-// Read waitlist data
 function getWaitlistData(): { signups: Array<Record<string, unknown>>; count: number } {
   ensureDataDir();
   if (!fs.existsSync(DATA_FILE)) {
@@ -27,16 +24,14 @@ function getWaitlistData(): { signups: Array<Record<string, unknown>>; count: nu
   }
 }
 
-// Save waitlist data
 function saveWaitlistData(data: { signups: Array<Record<string, unknown>>; count: number }) {
   ensureDataDir();
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-// GET - Get waitlist count and progress
 export async function GET() {
   const data = getWaitlistData();
-  const target = 1000; // Target number of signups
+  const target = 1000;
   const progress = Math.min(Math.round((data.count / target) * 100), 100);
 
   return NextResponse.json({
@@ -47,13 +42,11 @@ export async function GET() {
   });
 }
 
-// POST - Add new signup
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const data = getWaitlistData();
 
-    // Check if email already exists
     const emailExists = data.signups.some(
       (signup) => signup.email === body.email
     );
@@ -65,7 +58,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Add new signup with timestamp
     const newSignup = {
       ...body,
       createdAt: new Date().toISOString(),
